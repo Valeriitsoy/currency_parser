@@ -11,25 +11,25 @@ def get_html(url):                                                          # з
     return req.text
 
 
+def save_json(path_='', filename='data_file.json'):
+    full_file_name = os.path.join(path_, file_name)
+    with open(file_name, "w", encoding='UTF-8') as file:                       # создание json в папке исходника
+        json.dump(data, file, indent=2, ensure_ascii=False)
+
+
 def write_json(data):                                                             # создание пути сохранения и файл json
-    file_name = 'data_file.json'
     try:
         parser = argparse.ArgumentParser()
         parser.add_argument('-p', '--path', type=str, help='Укажите путь')
         args = parser.parse_args()
         path_ = args.path
         if path_ is None:
-            with open(file_name, "w", encoding='UTF-8') as file:                       # создание json в папке исходника
-                json.dump(data, file, indent=2, ensure_ascii=False)
-
+            save_json()
         else:
             if not os.path.exists(path_):                                          # Если пути не существует создаем его
                 os.makedirs(path_)
-                full_file_name = os.path.join(path_, file_name)
-
-                with open(full_file_name, "w", encoding='UTF-8') as file:                  # создание json в новом месте
-                    json.dump(data, file, indent=2, ensure_ascii=False)
-
+                save_json(path_=path_)
+             
     except FileNotFoundError:
         print('try -h, --help')
 
